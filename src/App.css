@@ -1,0 +1,12 @@
+.card { 
+  width: 100%;
+  background-color: yellow;
+  display: flex;
+  justify-content: center;
+}
+
+.card-text {
+  padding: 0;
+  margin: 0;
+  font-size: calc(1rem + 20vw)
+}
