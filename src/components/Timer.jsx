@@ -14,16 +14,19 @@ const Timer = (props) => {
             {props.timerStage === 2 && <>
                 <button onClick={() => {
                     props.handleTimerStage(3)
-                    props.handleRunning(true)
                 }
-            }>You've earned a {'5'} minute break! Would you like to start it?</button>
+            }>You've earned a {(props.pomodoroCount / 4) % 1 === 0 ? '10' : '5'} minute break! Would you like to start it?</button>
             </>}
             {(props.timerStage > 1 && props.timerStage < 4) && <button onClick={() => {
                     props.handleTimerStage(1)
                     props.handleRunning(true)
                 }
             }>Cancel and start another 25 minute session</button>}
-            {props.timerStage === 4 && <button onClick={() => props.handleTimerStage(1)} >Your break is up. Press either green button to begin a new 25 minute session</button>}
+            {props.timerStage === 4 && <button onClick={() => {
+                    props.handleTimerStage(1)
+                    props.handleRunning(true)
+                }
+            } >Your break is up. Press either green button to begin a new 25 minute session</button>}
         </section>
     )
 }
