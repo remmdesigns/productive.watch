@@ -28,17 +28,20 @@ const Stopwatch = (props) => {
     }
 
     return (
-        <section>
-            <h2>Today's Stop Watch</h2>
-            <div className='card'>
-            <p className='card-text'>
-                <span>{("" + Math.floor((props.stopwatch / 3600) % 60)).slice(-2)}</span>:
-                <span>{("0" + Math.floor((props.stopwatch / 60) % 60)).slice(-2)}</span>'
-                <span>{("0" + (props.stopwatch % 60)).slice(-2)}</span>
-            </p>
+        <section className='flex flex-direction-column '>
+            <h2 className='text-align-center'>Today's Stop Watch</h2>
+            <div className='text-align-center'>
+                <p className='clock extra-large-font'>
+                    <span>{("" + Math.floor((props.stopwatch / 3600) % 60)).slice(-2)}</span>:
+                    <span>{("0" + Math.floor((props.stopwatch / 60) % 60)).slice(-2)}</span>'
+                    <span>{("0" + (props.stopwatch % 60)).slice(-2)}</span>
+                </p>
             </div>
-            <button onClick={handleStopwatchButton}>{buttonText}</button>
-            <button onClick={() => props.handleReset()}>Reset</button>
+            <div className="grid-3-1--1">
+                <button className='primary-button' onClick={handleStopwatchButton}>{buttonText}</button>
+                <button onClick={() => props.handleReset()}>Reset</button>  
+            </div>
+            
         </section>
     )
 }

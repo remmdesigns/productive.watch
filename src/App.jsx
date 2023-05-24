@@ -5,6 +5,7 @@ import Stopwatch from './components/Stopwatch'
 import Timer from './components/Timer'
 import History from './components/History'
 import Footer from './components/Footer'
+import About from './components/About'
 
 function App() {
   // https://www.geeksforgeeks.org/create-a-stop-watch-using-reactjs/
@@ -113,26 +114,39 @@ function App() {
     setTimerStage(stage)
   }
 
+  console.log(` ___ ___ __  __ __  __ 
+| _ \\ __|  \\/  |  \\/  |
+|   / _|| |\\/| | |\\/| |
+|_|_\\___|_|  |_|_|  |_|
+
+Designed and developed by REMMDESIGNS©
+Visit www.remmdesigns.com to learn more.`)
+
   return (
     <>
       <Header />
       <main>
-        <Stopwatch 
-          stopwatch={stopwatch} 
-          running={running}
-          timerStage={timerStage}
-          handleRunning={handleRunning} 
-          handleReset={handleReset}
-          handleTimerStage={handleTimerStage}
-        />
-        <Timer 
-          timer={timer}
-          pomodoroCount={pomodoroCount}
-          timerStage={timerStage}
-          handleTimerStage={handleTimerStage}
-          handleRunning={handleRunning} 
-        />
-        <History />
+        <div className='padding-1111 flex justify-content-center'>
+          <div className='container'>
+            <Stopwatch 
+              stopwatch={stopwatch} 
+              running={running}
+              timerStage={timerStage}
+              handleRunning={handleRunning} 
+              handleReset={handleReset}
+              handleTimerStage={handleTimerStage}
+            />
+            <Timer 
+              timer={timer}
+              pomodoroCount={pomodoroCount}
+              timerStage={timerStage}
+              handleTimerStage={handleTimerStage}
+              handleRunning={handleRunning} 
+            />
+            {/* <History /> */}          
+          </div>
+        </div>
+        <About />
       </main>
       <Footer />
     </>
