@@ -1,12 +1,15 @@
 const Footer = () => {
 
     return (
-        <footer>
-            <p>Designed and developed by</p>
-            <p><span>REMM</span>DESIGNS<span>TM</span></p>
-            <p>We are web development company and here to help you design and develop your websites and/or to design your app ideas.</p>
-            <p>Learn more about us at:</p>
-            <a href='www.remmdesigns.com' target='_blank'>www.remmdesigns.com</a>
+        <footer className="bg-offblack white padding-2121 padding-0040 flex justify-content-center">
+            <div className='container'>
+                <p>Designed and developed by</p>
+                <p className="large-font"><span className="bold">REMM</span>DESIGNS<span>&trade;</span></p>
+                <hr />
+                <p className='larger-font line-height-1-15'>We are web development company helping people design and develop their websites and/or their design app ideas.</p>
+                <p >Learn more about us at:</p>
+                <a href='https://www.remmdesigns.com' className='white large-font' target="_blank" rel="noopener noreferrer">www.remmdesigns.com</a>
+            </div>            
         </footer>
     )
 }
