@@ -9,9 +9,12 @@ import Footer from './components/Footer'
 function App() {
   // https://www.geeksforgeeks.org/create-a-stop-watch-using-reactjs/
   // https://stackoverflow.com/questions/8043026/how-to-format-numbers-by-prepending-0-to-single-digit-numbers
+  // https://stackoverflow.com/questions/2304052/check-if-a-number-has-a-decimal-place-is-a-whole-number
 
   const start = 0 //(3600*10-10)
-  const pomodoro = 10
+  const pomodoro = 1500
+  const shortBreak = 300
+  const longBreak = 600
 
   const [stopwatch, setStopWatch] = useState(start)
   const [running, setRunning] = useState(false)
@@ -19,6 +22,8 @@ function App() {
   const [timer, setTimer] = useState(pomodoro)
   const [pomodoroCount, setPomodoroCount] = useState(0)
   const [timerStage, setTimerStage] = useState(1)
+
+  const [previousEntries, setPreviousEntries] = useState(() => JSON.parse(localStorage.getItem("history") ?? '[]'))
 
   useEffect(() => {
     if (running && timerStage < 3) {
@@ -41,8 +46,7 @@ function App() {
   })
 
   useEffect(() => {
-    // Could improve this. Since it doesn't make sense that running needs to be going for the timer to be. Because we need to switch on running in other parts of the code to get the timer counting down
-    if (running && timer > 0) {
+    if ((running || timerStage === 3) && timer > 0) {
       // console.log(timer)
 
       const timerId = setInterval(() => {
@@ -77,24 +81,33 @@ function App() {
   }
 
   const handleReset = () => {
+    // Record session...
+    // previousEntries.push({
+    //   date: new Date(),
+    //   stopwatch,
+    //   pomodoroCount
+    // })
+    // localStorage.setItem("history", JSON.stringify(previousEntries))
+
     setRunning(false)
     setStopWatch(start)
     setTimer(pomodoro)
     setPomodoroCount(0)
     setTimerStage(1)
-
-    // Record session...
   }
 
   const handleTimerStage = (stage) => {
     // 1: Working, 2: Work session has ended, 3: On break, 4: Break has ended
 
     if(stage === 1) {
-      setTimer(10)
+      setTimer(pomodoro)
     } 
     if (stage === 3) {
-      // Logic to handle if it is a 5 or 10 min break
-      setTimer(5)
+      if ((pomodoroCount / 4) % 1 === 0) {
+        setTimer(longBreak)
+      } else {
+        setTimer(shortBreak)
+      }
     }
 
     setTimerStage(stage)
