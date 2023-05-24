@@ -11,6 +11,7 @@ function App() {
   // https://www.geeksforgeeks.org/create-a-stop-watch-using-reactjs/
   // https://stackoverflow.com/questions/8043026/how-to-format-numbers-by-prepending-0-to-single-digit-numbers
   // https://stackoverflow.com/questions/2304052/check-if-a-number-has-a-decimal-place-is-a-whole-number
+  // https://stackoverflow.com/questions/60340744/javascript-audio-loop-for-3-times
 
   const start = 0 //(3600*10-10)
   const pomodoro = 1500
@@ -59,6 +60,14 @@ function App() {
       }
     }    
   })
+
+  // Tried to get the timer to loop 3 times but couldn't get it to work
+  useEffect(() => {
+    if (timer === 0) {
+      const audio = new Audio('src/assets/announcement.mp3')
+      audio.play()
+    } 
+  }, [timer])
 
   useEffect(() => {
       if (timer === 0 && timerStage === 1) {
