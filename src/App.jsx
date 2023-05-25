@@ -59,7 +59,7 @@ function App() {
   // Tried to get the timer to loop 3 times but couldn't get it to work
   useEffect(() => {
     if (timer === 0) {
-      const audio = new Audio('src/assets/announcement.mp3')
+      const audio = new Audio('announcement.mp3')
       audio.play()
     } 
   }, [timer])
