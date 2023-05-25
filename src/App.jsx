@@ -8,11 +8,6 @@ import Footer from './components/Footer'
 import About from './components/About'
 
 function App() {
-  // https://www.geeksforgeeks.org/create-a-stop-watch-using-reactjs/
-  // https://stackoverflow.com/questions/8043026/how-to-format-numbers-by-prepending-0-to-single-digit-numbers
-  // https://stackoverflow.com/questions/2304052/check-if-a-number-has-a-decimal-place-is-a-whole-number
-  // https://stackoverflow.com/questions/60340744/javascript-audio-loop-for-3-times
-
   const start = 0 //(3600*10-10)
   const pomodoro = 1500
   const shortBreak = 300
@@ -82,6 +77,16 @@ function App() {
     } 
   }, [timer])
 
+  useEffect(() => {
+    console.log(` ___ ___ __  __ __  __ 
+| _ \\ __|  \\/  |  \\/  |
+|   / _|| |\\/| | |\\/| |
+|_|_\\___|_|  |_|_|  |_|
+
+Designed and developed by REMMDESIGNS©
+Visit www.remmdesigns.com to learn more.`)
+  }, [])
+
   const handleRunning = (boolean) => {
     if (boolean) {
       setRunning(boolean)
@@ -122,14 +127,6 @@ function App() {
 
     setTimerStage(stage)
   }
-
-  console.log(` ___ ___ __  __ __  __ 
-| _ \\ __|  \\/  |  \\/  |
-|   / _|| |\\/| | |\\/| |
-|_|_\\___|_|  |_|_|  |_|
-
-Designed and developed by REMMDESIGNS©
-Visit www.remmdesigns.com to learn more.`)
 
   return (
     <>
