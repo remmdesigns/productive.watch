@@ -8,19 +8,20 @@ import Footer from './components/Footer'
 import About from './components/About'
 
 function App() {
-  const start = 0 //(3600*10-10)
-  const pomodoro = 1500
-  const shortBreak = 300
-  const longBreak = 600
+  const start = 0 //3601000 //(3600*10-10)
+  const pomodoro = 1500 //1500000
+  const shortBreak = 300 //300000
+  const longBreak = 600 //600000
 
-  const [stopwatch, setStopWatch] = useState(start)
+  const [stopwatch, setStopwatch] = useState(start)
   const [running, setRunning] = useState(false)
 
   const [timer, setTimer] = useState(pomodoro)
   const [pomodoroCount, setPomodoroCount] = useState(0)
   const [timerStage, setTimerStage] = useState(1)
 
-  const [previousEntries, setPreviousEntries] = useState(() => JSON.parse(localStorage.getItem("history") ?? '[]'))
+  // const [previousEntries, setPreviousEntries] = useState(() => JSON.parse(localStorage.getItem("history") ?? '[]'))
+  const [timeArray, setTimeArray] = useState(() => JSON.parse(localStorage.getItem("timeArray") ?? '[]'))
 
   useEffect(() => {
     if (running && timerStage < 3) {
@@ -33,7 +34,25 @@ function App() {
       // console.log(("0" + Math.floor((stopwatch / 3600) % 60)).slice(-2))
 
       const stopwatchId = setInterval(() => {
-        setStopWatch(prevState => prevState + 1)
+        // setStopwatch(prevState => prevState + 1)
+        const currentTime = new Date()
+
+        // let total
+
+        // timeArray.map(item => {
+        //   console.log(item)
+        //   total += parseInt(item.end, 10) - parseInt(item.start, 10)
+        // })
+
+        // console.log(total)
+        // setStopwatch(total)
+
+        setStopwatch((currentTime - timeArray.at(-1).start))
+        console.log(stopwatch)
+        console.log(("0" + Math.floor((stopwatch / 1000) % 60)).slice(-2))
+        console.log(("0" + Math.floor((stopwatch / 60000) % 60)).slice(-2))
+        console.log(("" + Math.floor((stopwatch / 3600000) % 60)))
+
       }, 1000)    
   
       return () => {
@@ -87,6 +106,29 @@ Designed and developed by REMMDESIGNS©
 Visit www.remmdesigns.com to learn more.`)
   }, [])
 
+  useEffect(() => {
+    const currentTime = new Date()
+
+    if (running) {
+
+      timeArray.push({ start: currentTime })
+      localStorage.setItem("timeArray", JSON.stringify(timeArray))
+
+    } else if (!running) {
+
+      const lastItem = timeArray.pop()
+      // const duration = currentTime - lastItem?.start
+      // console.log(duration / 1000)
+      const updatedRecording = {...lastItem, end: currentTime }
+
+      timeArray.push(updatedRecording)
+      localStorage.setItem("timeArray", JSON.stringify(timeArray))
+    }
+
+    console.log(JSON.parse(localStorage.getItem("timeArray") ?? '[]'))
+
+  }, [running])
+
   const handleRunning = (boolean) => {
     if (boolean) {
       setRunning(boolean)
@@ -103,12 +145,15 @@ Visit www.remmdesigns.com to learn more.`)
     //   pomodoroCount
     // })
     // localStorage.setItem("history", JSON.stringify(previousEntries))
+    setTimeArray([])
+    localStorage.setItem("timeArray", JSON.stringify(timeArray))
 
     setRunning(false)
-    setStopWatch(start)
+    setStopwatch(start)
     setTimer(pomodoro)
     setPomodoroCount(0)
     setTimerStage(1)
+    
   }
 
   const handleTimerStage = (stage) => {
@@ -134,22 +179,22 @@ Visit www.remmdesigns.com to learn more.`)
       <main>
         <div className='padding-1111 flex justify-content-center'>
           <div className='container'>
-            <Stopwatch 
+            {/* <Stopwatch 
               stopwatch={stopwatch} 
               running={running}
               timerStage={timerStage}
               handleRunning={handleRunning} 
               handleReset={handleReset}
               handleTimerStage={handleTimerStage}
-            />
-            <Timer 
+            /> */}
+            {/* <Timer 
               timer={timer}
               pomodoroCount={pomodoroCount}
               timerStage={timerStage}
               handleTimerStage={handleTimerStage}
               handleRunning={handleRunning} 
-            />
-            {/* <History /> */}          
+            /> */}
+            <History />          
           </div>
         </div>
         <About />
