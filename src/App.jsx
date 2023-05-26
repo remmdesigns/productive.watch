@@ -25,33 +25,25 @@ function App() {
 
   useEffect(() => {
     if (running && timerStage < 3) {
-      // console.log(stopwatch)
-      // How many seconds - total remainder 60 to get the second
-      // console.log(("0" + (stopwatch % 60)).slice(-2))
-      // How many minutes - Returns the greatest total less than or equal to 60 (one minute) then use the remainder of 60 to get the minute
-      // console.log(("0" + Math.floor((stopwatch / 60) % 60)).slice(-2))
-      // How many hours - Returns the greatest total less than or equal to 3600 (one hour) then use the remainder of 60 to get the hour
-      // console.log(("0" + Math.floor((stopwatch / 3600) % 60)).slice(-2))
 
       const stopwatchId = setInterval(() => {
-        // setStopwatch(prevState => prevState + 1)
         const currentTime = new Date()
 
-        // let total
+        setStopwatch(() => {
+          let total = 0
+          if (timeArray.length > 1) {
+            for (let i = 0; i < timeArray.length -1; i++) {
+              total += timeArray[i].end -timeArray[i].start
+            }
+          }
+          total += currentTime - timeArray.at(-1).start
+          return total
+        })
 
-        // timeArray.map(item => {
-        //   console.log(item)
-        //   total += parseInt(item.end, 10) - parseInt(item.start, 10)
-        // })
-
-        // console.log(total)
-        // setStopwatch(total)
-
-        setStopwatch((currentTime - timeArray.at(-1).start))
-        console.log(stopwatch)
-        console.log(("0" + Math.floor((stopwatch / 1000) % 60)).slice(-2))
-        console.log(("0" + Math.floor((stopwatch / 60000) % 60)).slice(-2))
-        console.log(("" + Math.floor((stopwatch / 3600000) % 60)))
+        // console.log(stopwatch)
+        // console.log(("0" + Math.floor((stopwatch / 1000) % 60)).slice(-2))
+        // console.log(("0" + Math.floor((stopwatch / 60000) % 60)).slice(-2))
+        // console.log(("" + Math.floor((stopwatch / 3600000) % 60)))
 
       }, 1000)    
   
@@ -115,17 +107,20 @@ Visit www.remmdesigns.com to learn more.`)
       localStorage.setItem("timeArray", JSON.stringify(timeArray))
 
     } else if (!running) {
+      // need this so when someone resets the stopwatch when still running it doesn't bug out
+      if (timeArray.length === 0 ) {
 
-      const lastItem = timeArray.pop()
-      // const duration = currentTime - lastItem?.start
-      // console.log(duration / 1000)
-      const updatedRecording = {...lastItem, end: currentTime }
+        return 
 
-      timeArray.push(updatedRecording)
-      localStorage.setItem("timeArray", JSON.stringify(timeArray))
+      } else {
+
+        const lastItem = timeArray.pop()
+        timeArray.push({...lastItem, end: currentTime })
+        localStorage.setItem("timeArray", JSON.stringify(timeArray))
+
+      }      
     }
-
-    console.log(JSON.parse(localStorage.getItem("timeArray") ?? '[]'))
+    // console.log(JSON.parse(localStorage.getItem("timeArray") ?? '[]'))
 
   }, [running])
 
@@ -179,14 +174,14 @@ Visit www.remmdesigns.com to learn more.`)
       <main>
         <div className='padding-1111 flex justify-content-center'>
           <div className='container'>
-            {/* <Stopwatch 
+            <Stopwatch 
               stopwatch={stopwatch} 
               running={running}
               timerStage={timerStage}
               handleRunning={handleRunning} 
               handleReset={handleReset}
               handleTimerStage={handleTimerStage}
-            /> */}
+            />
             {/* <Timer 
               timer={timer}
               pomodoroCount={pomodoroCount}
@@ -194,7 +189,7 @@ Visit www.remmdesigns.com to learn more.`)
               handleTimerStage={handleTimerStage}
               handleRunning={handleRunning} 
             /> */}
-            <History />          
+            {/* <History />           */}
           </div>
         </div>
         <About />
