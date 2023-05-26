@@ -32,9 +32,9 @@ const Stopwatch = (props) => {
             <h2 className='text-align-center'>Today's Stop Watch</h2>
             <div className='text-align-center'>
                 <p className='clock extra-large-font'>
-                    <span>{("" + Math.floor((props.stopwatch / 3600) % 60)).slice(-2)}</span>:
-                    <span>{("0" + Math.floor((props.stopwatch / 60) % 60)).slice(-2)}</span>'
-                    <span>{("0" + (props.stopwatch % 60)).slice(-2)}</span>
+                    <span>{("" + Math.floor((props.stopwatch / 3600000) % 60)).slice(-2)}</span>:
+                    <span>{("0" + Math.floor((props.stopwatch / 60000) % 60)).slice(-2)}</span>'
+                    <span>{("0" + Math.floor((props.stopwatch / 1000) % 60)).slice(-2)}</span>
                 </p>
             </div>
             <div className="grid-3-1--1">
