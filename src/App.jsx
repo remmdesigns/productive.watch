@@ -9,9 +9,9 @@ import About from './components/About'
 
 function App() {
   const start = 0 //3601000 //(3600*10-10)
-  const pomodoro = 10000//1500000
-  const shortBreak = 10000//300000
-  const longBreak = 20000 //600000
+  const pomodoro = 1500000
+  const shortBreak = 300000
+  const longBreak = 600000
 
   const [stopwatch, setStopwatch] = useState(start)
   const [running, setRunning] = useState(false)
