@@ -2,15 +2,15 @@ const Stopwatch = (props) => {
     let buttonText
 
     if (props.running) {
+        buttonText = 'Stop'      
+    } else {        
         if (props.timerStage === 1 || props.timerStage === 2) {
-            buttonText = 'Stop'
+            buttonText = 'Start'
         } else if (props.timerStage === 3) {
             buttonText = 'Resume & cancel break'
         } else if (props.timerStage === 4) {
             buttonText = 'Begin next session'
-        }        
-    } else {        
-        buttonText = 'Start'
+        }  
     }
 
     const handleStopwatchButton = () => {
@@ -19,11 +19,11 @@ const Stopwatch = (props) => {
         } else if (props.timerStage === 3) {
             // They want to resume and cancel their break
             props.handleTimerStage(1)
-            props.handleRunning(true)
+            props.handleRunning('true')
         } else if (props.timerStage === 4) {
             // Begin next session
             props.handleTimerStage(1)
-            props.handleRunning(true)
+            props.handleRunning('true')
         } 
     }
 
