@@ -8,12 +8,12 @@ import Footer from './components/Footer'
 import About from './components/About'
 
 function App() {
-  const start = 0 //3601000 //(3600*10-10)
   const pomodoro = 1500000
   const shortBreak = 300000
   const longBreak = 600000
+  let timeNow = new Date()
 
-  const [stopwatch, setStopwatch] = useState(start)
+  const [stopwatch, setStopwatch] = useState(0)
   const [running, setRunning] = useState(false)
 
   const [timer, setTimer] = useState(pomodoro)
@@ -24,6 +24,32 @@ function App() {
   const [stopwatchArray, setStopwatchArray] = useState(() => JSON.parse(localStorage.getItem("stopwatchArray") ?? '[]'))
   const [timerArray, setTimerArray] = useState(() => JSON.parse(localStorage.getItem("timerArray") ?? '[]'))
 
+  const resetStopwatchArray = () => {
+    setStopwatchArray([])
+    localStorage.setItem("stopwatchArray", JSON.stringify(stopwatchArray))
+  }
+
+  const resetTimerArray = () => {
+    setTimerArray([])
+    localStorage.setItem("timerArray", JSON.stringify(timerArray))
+  }
+
+  const updateLocally = (clock) => {
+    if (clock === 'stopwatch') {
+      const lastItem = stopwatchArray.pop()
+      stopwatchArray.push({...lastItem, end: timeNow })
+      localStorage.setItem("stopwatchArray", JSON.stringify(stopwatchArray))
+
+    } else if (clock === 'timer') {
+      const lastItem = timerArray.pop()
+      timerArray.push({...lastItem, end: timeNow })
+      localStorage.setItem("timerArray", JSON.stringify(timerArray))
+
+    } else {
+      return
+    }
+  }
+
   useEffect(() => {
     console.log(` ___ ___ __  __ __  __ 
 | _ \\ __|  \\/  |  \\/  |
@@ -32,15 +58,18 @@ function App() {
 
 Designed and developed by REMMDESIGNS©
 Visit www.remmdesigns.com to learn more.`)
+
+    if (!running) {
+      resetStopwatchArray()
+      resetTimerArray()
+    }
   }, [])
 
   useEffect(() => {
-    // console.log(JSON.parse(localStorage.getItem("stopwatchArray") ?? '[]'))
-
     if (running && timerStage < 3) {
 
       const stopwatchId = setInterval(() => {
-        const currentTime = new Date()
+        timeNow = new Date()
 
         setStopwatch(() => {
           let total = 0
@@ -49,32 +78,25 @@ Visit www.remmdesigns.com to learn more.`)
               total += stopwatchArray[i].end -stopwatchArray[i].start
             }
           }
-          total += currentTime - stopwatchArray.at(-1).start
+          total += timeNow - stopwatchArray.at(-1).start
           return total
         })
-
-        // console.log(stopwatch)
-        // console.log(("0" + Math.floor((stopwatch / 1000) % 60)).slice(-2))
-        // console.log(("0" + Math.floor((stopwatch / 60000) % 60)).slice(-2))
-        // console.log(("" + Math.floor((stopwatch / 3600000) % 60)))
-
       }, 1000)    
   
       return () => {
         clearInterval(stopwatchId)        
       }
-    }    
+    } 
+    
   })
 
   useEffect(() => {
     if ((running || timerStage === 3) && timer > 0) {
 
       const timerId = setInterval(() => {
-        // setTimer(prevState => prevState - 1)
-        const currentTime = new Date()
+        timeNow = new Date()
 
         setTimer(() => {
-
           if (timerStage === 1) {
             let total = 0
             if (timerArray.length > 1) {
@@ -82,7 +104,7 @@ Visit www.remmdesigns.com to learn more.`)
                 total += timerArray[i].end -timerArray[i].start
               }
             }
-            total += currentTime - timerArray.at(-1).start
+            total += timeNow - timerArray.at(-1).start
             return pomodoro - total
           }
           if (timerStage === 3) {
@@ -93,12 +115,10 @@ Visit www.remmdesigns.com to learn more.`)
                 total += timerArray[i].end -timerArray[i].start
               }
             }
-            total += currentTime - timerArray.at(-1).start
+            total += timeNow - timerArray.at(-1).start
             return ((pomodoroCount / 4) % 1 === 0 ? longBreak : shortBreak) - total
           }
-
         })
-
       }, 1000)
   
       return () => {
@@ -109,10 +129,7 @@ Visit www.remmdesigns.com to learn more.`)
 
   useEffect(() => {
     if (timer <= 0) {
-      const currentTime = new Date()
-      const lastItem = timerArray.pop()
-      timerArray.push({...lastItem, end: currentTime })
-      localStorage.setItem("timerArray", JSON.stringify(timerArray))
+      updateLocally('timer')
 
       const audio = new Audio('announcement.mp3')
       audio.play()
@@ -130,57 +147,39 @@ Visit www.remmdesigns.com to learn more.`)
   }, [timer])
 
   useEffect(() => {
-    const currentTime = new Date()
-
     if (running) {
-
-      stopwatchArray.push({ start: currentTime })
+      stopwatchArray.push({ start: timeNow })
       localStorage.setItem("stopwatchArray", JSON.stringify(stopwatchArray))
 
     } else if (!running) {
       // need this so when someone resets the stopwatch when still running it doesn't bug out
       if (stopwatchArray.length === 0 ) {
-
         return 
 
       } else {
-
-        const lastItem = stopwatchArray.pop()
-        stopwatchArray.push({...lastItem, end: currentTime })
-        localStorage.setItem("stopwatchArray", JSON.stringify(stopwatchArray))
+        updateLocally('stopwatch')
 
       }      
     }
-
   }, [running])
 
 
   useEffect(() => {
-    const currentTime = new Date()
-
     if ((running || timerStage === 3) && timer > 0) {
-
-      timerArray.push({ start: currentTime })
+      timerArray.push({ start: timeNow })
       localStorage.setItem("timerArray", JSON.stringify(timerArray))
 
     } else if (!running) {
-      // need this so when someone resets the stopwatch when still running it doesn't bug out
-      if (timerArray.length === 0 ) {
 
+      if (timerArray.length === 0 ) {
         return 
 
       } else {
-
-        const lastItem = timerArray.pop()
-        timerArray.push({...lastItem, end: currentTime })
-        localStorage.setItem("timerArray", JSON.stringify(timerArray))
+        updateLocally('timer')
 
       }      
     }
-
   }, [running, timerStage])
-
-
 
   const handleRunning = (boolean) => {
     if (boolean === 'true') {
@@ -200,24 +199,19 @@ Visit www.remmdesigns.com to learn more.`)
     //   pomodoroCount
     // })
     // localStorage.setItem("history", JSON.stringify(previousEntries))
-    setStopwatchArray([])
-    localStorage.setItem("stopwatchArray", JSON.stringify(stopwatchArray))
-    setTimerArray([])
-    localStorage.setItem("timerArray", JSON.stringify(timerArray))
+    resetStopwatchArray()
+    resetTimerArray()
 
     setRunning(false)
-    setStopwatch(start)
+    setStopwatch(0)
     setTimer(pomodoro)
     setPomodoroCount(0)
     setTimerStage(1)
-    
   }
 
   const handleTimerStage = (stage) => {
     // 1: Working, 2: Work session has ended, 3: On break, 4: Break has ended
-   
-    setTimerArray([])
-    localStorage.setItem("timerArray", JSON.stringify(timerArray))
+    resetTimerArray()
 
     if(stage === 1) {    
       setTimer(pomodoro)
@@ -229,7 +223,6 @@ Visit www.remmdesigns.com to learn more.`)
         setTimer(shortBreak)
       }
     }
-
     setTimerStage(stage)
   }
 
