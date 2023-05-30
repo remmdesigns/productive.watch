@@ -6,7 +6,7 @@ const Footer = () => {
                 <p>Designed and developed by</p>
                 <p className="large-font"><span className="bold">REMM</span>DESIGNS<span>&trade;</span></p>
                 <hr />
-                <p className='larger-font line-height-1-15'>We are web development company helping people design and develop their websites and/or their design app ideas.</p>
+                <p className='larger-font s-display-large-font line-height-1-15'>We are web development company helping people design and develop their websites and/or their design app ideas.</p>
                 <p >Learn more about us at:</p>
                 <a href='https://www.remmdesigns.com' className='white large-font' target="_blank" rel="noopener noreferrer">www.remmdesigns.com</a>
             </div>            
