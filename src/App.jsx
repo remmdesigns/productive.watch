@@ -8,9 +8,9 @@ import Footer from './components/Footer'
 import About from './components/About'
 
 function App() {
-  const pomodoro = 1500000
-  const shortBreak = 300000
-  const longBreak = 600000
+  const pomodoro = 1500999
+  const shortBreak = 300999
+  const longBreak = 600999
   let timeNow = new Date()
 
   const [stopwatch, setStopwatch] = useState(0)
