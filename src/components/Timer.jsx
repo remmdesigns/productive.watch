@@ -7,7 +7,7 @@ const Timer = (props) => {
             <div className='text-align-center'>
                 <p className='clock extra-large-font'>
                 <span>{props.timer > 0 ? ("0" + Math.floor((props.timer / 60000) % 60)).slice(-2): '00'}</span>'
-                <span>{props.timer > 0 ? ("0" + Math.ceil((props.timer / 1000) % 60)).slice(-2): '00'}</span>
+                <span>{props.timer > 0 ? ("0" + Math.floor((props.timer / 1000) % 60)).slice(-2): '00'}</span>
                 </p>
             </div>
             {/* {props.timerStage === 1 && <button className='' onClick={() => props.handleTimerStage(1)}>Reset</button>} */}
